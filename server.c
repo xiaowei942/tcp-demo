@@ -7,8 +7,9 @@
 #include <errno.h>
 #include <fcntl.h>
 
-//#define SETNONBLOCK
+#define SETNONBLOCK
 #define DOSEND
+#define DORECEIVE
 
 #define MAX_SEND_SIZE 1024
 #define MAX_RECV_SIZE 1024
@@ -81,7 +82,11 @@ int main()
 			} else {
 				sendIndex++;
 			}
-#else
+#endif
+
+#ifdef DORECEIVE
+			printf("Now do receive !\n");
+			sprintf(sendBuf, "Data from Server --> index: %d\n", sendIndex);
 			recvLength = recv(clientSocket, recvBuf, MAX_RECV_SIZE, MSG_WAITALL);
 			if(recvLength == 0) {
 				printf("Connection lost !\n");
